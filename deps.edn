@@ -7,14 +7,15 @@
  :deps
  {;; Application
   org.clojure/clojure {:mvn/version "1.11.3"}
-  com.brunobonacci/mulog {:mvn/version "0.9.0"}}
+  com.brunobonacci/mulog {:mvn/version "0.9.0"}
+  cli-matic/cli-matic {:mvn/version "0.5.4"}}
  ;; ---------------------------------------------------------
 
  ;; ---------------------------------------------------------
  :aliases
  {;; ------------
   ;; Clojure.main execution of application
-  :run/app
+  :xic
   {:main-opts ["-m" "xic.core"]}
 
   ;; Clojure.exec execution of specified function

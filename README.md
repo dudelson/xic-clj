@@ -1,4 +1,11 @@
-# dudelson/xic-clj
+# xic-clj
+
+A rewrite of xic ([Cornell compilers project](https://www.cs.cornell.edu/courses/cs4120/2018sp/)) in clojure, as a comparison with the original
+Java implementation.
+
+`$ just xic [options] <source-files>`
+
+# default readme content (outdated)
 
 ```none
 ██████╗ ██████╗  █████╗  ██████╗████████╗██╗ ██████╗ █████╗ ██╗     ██╗     ██╗
