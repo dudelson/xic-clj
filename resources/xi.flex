@@ -1,4 +1,4 @@
-package nr339.lexer;
+package xic.java;
 
 %%
 
@@ -24,15 +24,15 @@ package nr339.lexer;
 		ERROR
     }
 	// represents the string or character that will be built
-	private StringBuffer string = new StringBuffer();  
+	private StringBuffer string = new StringBuffer();
 	// temporary token to get correct column number before evaluating
-	private Token tempToken; 
+	private Token tempToken;
 	// represents the previous state we were in (for strings and chars)
 	private int prevState = -1;
 	private final String maxint = "9223372036854775808";
 	/**
 	 * Token class to be returned by the lexer. Contains the type of token,
-	 * attributes for ints, chars, strings, and errors. Also has location 
+	 * attributes for ints, chars, strings, and errors. Also has location
 	 * information and a flag to be set if an int token is 2^63.
 	 */
     class Token {
@@ -42,14 +42,14 @@ package nr339.lexer;
 		int col;
 		boolean maxIntFlag;
 		Token(TokenType tt) {
-			type = tt; 
-			attribute = null; 
-			line = yyline+1; 
+			type = tt;
+			attribute = null;
+			line = yyline+1;
 			col = yycolumn+1;
 			maxIntFlag = false;
 		}
 		Token(TokenType tt, Object attr) {
-			type = tt; attribute = attr; 
+			type = tt; attribute = attr;
 			line = yyline+1; col = yycolumn+1;
 			maxIntFlag = false;
 		}
@@ -77,7 +77,7 @@ package nr339.lexer;
 	}
 
 	/**
-	 * Converts an escaped letter to its corresponding escape sequence (e.g. n -> \n)  
+	 * Converts an escaped letter to its corresponding escape sequence (e.g. n -> \n)
 	 *
 	 * @param escapeLetter The letter to be escaped
 	 * @return The escaped version of the given letter, if it is a valid letter, otherwise "ERROR"
@@ -106,7 +106,7 @@ package nr339.lexer;
 	}
 %}
 
-Keyword = "int" | "use" | "bool" | "return" | "true" | "false" | 
+Keyword = "int" | "use" | "bool" | "return" | "true" | "false" |
 		  "if" | "else" | "while" | "length"
 Whitespace = [ \t\f\r\n]
 Letter = [a-zA-Z]
@@ -115,8 +115,8 @@ HexDigit = [0-9a-fA-F]
 EscapeChars = (n|b|r|t|f|\"|'|\\)
 Identifier = {Letter}({Digit}|{Letter}|_|')*
 Integer = "0"|[1-9]{Digit}*
-Symbol = "*>>" | "<=" | ">=" | "==" | "!=" | "!" | "*" | ">" | "<" | "=" | "+" | 
-		 "-" | "/" | "%" | "&" | "|" | "(" | ")" | "[" | "]" | "{" | "}" | ":" | 
+Symbol = "*>>" | "<=" | ">=" | "==" | "!=" | "!" | "*" | ">" | "<" | "=" | "+" |
+		 "-" | "/" | "%" | "&" | "|" | "(" | ")" | "[" | "]" | "{" | "}" | ":" |
 		 "," | ";" | "_"
 Comment = "//"[^\r\n]*
 
@@ -129,17 +129,17 @@ Comment = "//"[^\r\n]*
 %%
 <YYINITIAL> {
 	"\""		{
-					prevState = YYINITIAL; yybegin(STRING); 
+					prevState = YYINITIAL; yybegin(STRING);
 					tempToken = new Token(TokenType.STRING);
 				}
 	'			{
-					prevState = YYINITIAL; 
-					yybegin(CHAR); 
+					prevState = YYINITIAL;
+					yybegin(CHAR);
 					tempToken = new Token(TokenType.CHAR);
 				}
 	{Whitespace} { /* ignore */ }
 	{Comment} 	{ /* ignore */ }
-	{Integer}   { 
+	{Integer}   {
 					try {
 						return new Token(TokenType.INT,
 							Long.parseLong(yytext()));
@@ -152,7 +152,7 @@ Comment = "//"[^\r\n]*
 							yybegin(DEATH);
 						return new Token(TokenType.ERROR, "Integer too large");
 					}
-				}			
+				}
 	{Keyword}	{ return new Token(TokenType.KEYWORD, yytext()); }
 	{Identifier} { return new Token(TokenType.ID, yytext()); }
 	{Symbol} 	{ return new Token(TokenType.SYMBOL, yytext()); }
@@ -160,7 +160,7 @@ Comment = "//"[^\r\n]*
 <STRING> {
 	"\""        {
 					String ret = string.toString();
-					string.setLength(0); // clear the string buffer 
+					string.setLength(0); // clear the string buffer
 					tempToken.attribute = ret;
 					prevState = STRING;
 					yybegin(YYINITIAL);
@@ -171,50 +171,50 @@ Comment = "//"[^\r\n]*
 	[^\"]       { string.append(yytext()); }
 
 	<<EOF>>		{
-					yybegin(DEATH); 
-					tempToken.type = TokenType.ERROR; 
-					tempToken.attribute = "Incomplete string"; 
+					yybegin(DEATH);
+					tempToken.type = TokenType.ERROR;
+					tempToken.attribute = "Incomplete string";
 					return tempToken;
 				}
 }
 <CHAR> {
 	"\\"        { prevState = CHAR; yybegin(ESCAPE); }
 	[^'\\]'		{
-					// make sure there is no additional character 
+					// make sure there is no additional character
 					// after escape sequence
 					if(tempToken.attribute != null){
-						yybegin(DEATH); 
+						yybegin(DEATH);
 						tempToken.type = TokenType.ERROR;
 						tempToken.attribute = "Invalid character literal";
-						return tempToken; 
+						return tempToken;
 					}
 					tempToken.attribute = yytext().charAt(0);
-					string.setLength(0); 
-					yybegin(YYINITIAL); 
+					string.setLength(0);
+					yybegin(YYINITIAL);
 					return tempToken;
 				}
 	'			{
 					// only valid if we find it after an escape sequence
 					if(tempToken.attribute == null){
-						yybegin(DEATH); 
+						yybegin(DEATH);
 						tempToken.type = TokenType.ERROR;
 						tempToken.attribute = "Invalid character literal";
-						return tempToken; 
+						return tempToken;
 					}
 					tempToken.attribute = tempToken.attribute.toString().charAt(0);
-					string.setLength(0); 
+					string.setLength(0);
 					yybegin(YYINITIAL); return tempToken;
 				}
 	<<EOF>>		{
-					yybegin(DEATH); 
-					tempToken.type = TokenType.ERROR; 
-					tempToken.attribute = "Incomplete character"; 
+					yybegin(DEATH);
+					tempToken.type = TokenType.ERROR;
+					tempToken.attribute = "Incomplete character";
 					return tempToken;
 				}
 	[^]			{
-					yybegin(DEATH); 
-					tempToken.type = TokenType.ERROR; 
-					tempToken.attribute = "Invalid character literal"; 
+					yybegin(DEATH);
+					tempToken.type = TokenType.ERROR;
+					tempToken.attribute = "Invalid character literal";
 					return tempToken;
 				}
 
@@ -227,8 +227,8 @@ Comment = "//"[^\r\n]*
 					}
 	x 				{ yybegin(HEX); }
 	[^]				{
-						yybegin(DEATH); 
-						return new Token(TokenType.ERROR, 
+						yybegin(DEATH);
+						return new Token(TokenType.ERROR,
 							"Invalid escape sequence");
 					}
 }
@@ -237,16 +237,16 @@ Comment = "//"[^\r\n]*
 								String character = parseHex(yytext());
 								if(character == "ERROR"){
 									yybegin(DEATH);
-									return new Token(TokenType.ERROR, 
+									return new Token(TokenType.ERROR,
 										"Invalid hex value");
 								}
 								string.append(character);
 								tempToken.attribute = string.toString();
 								yybegin(prevState);
-							}	 
+							}
 	[^]						{
-								yybegin(DEATH); 
-								return new Token(TokenType.ERROR, 
+								yybegin(DEATH);
+								return new Token(TokenType.ERROR,
 									"Must be a hex value");
 							}
 }
@@ -254,7 +254,7 @@ Comment = "//"[^\r\n]*
 	[^]	{ /* do nothing */ }
 }
 
-[^]		{ 
-			yybegin(DEATH); 
-			return new Token(TokenType.ERROR, "Invalid token"); 
+[^]		{
+			yybegin(DEATH);
+			return new Token(TokenType.ERROR, "Invalid token");
 		} // if nothing else matches, go to error
