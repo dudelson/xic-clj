@@ -1,0 +1,34 @@
+1:1 integer 1
+2:1 integer 11
+3:1 integer 1
+3:3 integer 1
+4:1 integer 0
+4:3 integer 0
+4:5 integer 1
+4:7 integer 100
+5:1 -
+5:2 integer 1
+5:4 -
+5:5 integer 2
+5:7 integer 3
+5:9 -
+5:10 integer 4
+5:12 integer 5
+5:14 integer 6
+5:16 -
+5:17 integer 7
+5:19 -
+5:20 integer 8
+5:22 integer 9
+6:1 integer 80082
+6:7 -
+6:8 integer 8008132
+8:1 integer 1234567890
+9:1 integer 987654321
+10:1 -
+10:2 integer 0
+12:1 -
+12:3 integer 9001
+14:1 integer 9223372036854775808
+15:1 -
+15:2 error:integer too large

@@ -4,7 +4,7 @@
 (def lib 'dudelson/xic)
 (def version "0.1.0")
 (def class-dir "build/classes")
-(def jar-file (format "build/%s-%s.jar" (name lib) version))
+(def uber-file (format "build/%s-%s-standalone.jar" (name lib) version))
 
 ;; delay to defer artifact downloads
 (def basis (delay (b/create-basis {:project "deps.edn"})))
@@ -16,14 +16,21 @@
             :class-dir class-dir
             :basis @basis}))
 
-(defn jar [_]
-  (compile nil)
-  (b/write-pom {:class-dir class-dir
-                :lib lib
-                :version version
-                :basis @basis
-                :src-dirs ["src"]})
+(defn uberjar [_]
+  ;; we invoke the compilation step from the Justfile because
+  ;; I find it simpler to reason about
+  ;;(compile nil)
+  ;;(b/write-pom {:class-dir class-dir
+  ;;              :lib lib
+  ;;              :version version
+  ;;              :basis @basis
+  ;;              :src-dirs ["src"])
   (b/copy-dir {:src-dirs ["src"]
                :target-dir class-dir})
-  (b/jar {:class-dir class-dir
-          :jar-file jar-file}))
+  (b/compile-clj {:basis @basis
+                  :ns-compile '[xic.core]
+                  :class-dir class-dir})
+  (b/uber {:class-dir class-dir
+           :uber-file uber-file
+           :basis @basis
+           :main 'xic.core}))

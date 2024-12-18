@@ -1,0 +1,8 @@
+1:1 string Hello World!
+2:1 string \nHello\tWorld!\n
+3:1 string Æ£±æ
+4:1 string '
+4:6 string '
+5:1 string \\"'d
+5:13 string 
+6:4 error:invalid hex escape sequence

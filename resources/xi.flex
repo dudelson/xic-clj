@@ -35,33 +35,33 @@ package xic.java;
 	 * attributes for ints, chars, strings, and errors. Also has location
 	 * information and a flag to be set if an int token is 2^63.
 	 */
-    class Token {
-		TokenType type;
-		Object attribute;
-		int line;
-		int col;
-		boolean maxIntFlag;
-		Token(TokenType tt) {
-			type = tt;
-			attribute = null;
-			line = yyline+1;
-			col = yycolumn+1;
-			maxIntFlag = false;
-		}
-		Token(TokenType tt, Object attr) {
-			type = tt; attribute = attr;
-			line = yyline+1; col = yycolumn+1;
-			maxIntFlag = false;
-		}
-		Token(TokenType tt, Object attr, boolean b) {
-			type = tt; attribute = attr;
-			line = yyline+1; col = yycolumn+1;
-			maxIntFlag = b;
-		}
+  public class Token {
+		  public TokenType type;
+		  public Object attribute;
+		  public int line;
+		  public int col;
+		  public boolean maxIntFlag;
+		  Token(TokenType tt) {
+		  	type = tt;
+		  	attribute = null;
+		  	line = yyline+1;
+		  	col = yycolumn+1;
+		  	maxIntFlag = false;
+		  }
+		  Token(TokenType tt, Object attr) {
+		  	type = tt; attribute = attr;
+		  	line = yyline+1; col = yycolumn+1;
+		  	maxIntFlag = false;
+		  }
+		  Token(TokenType tt, Object attr, boolean b) {
+		  	type = tt; attribute = attr;
+		  	line = yyline+1; col = yycolumn+1;
+		  	maxIntFlag = b;
+		  }
 
-		public String toString() {
-			return "" + line + ":" + col + " " + type + "(" + attribute + ")";
-		}
+		  public String toString() {
+		  	return "" + line + ":" + col + " " + type + "(" + attribute + ")";
+		  }
     }
 	/**
 	 * Parses a string representing a hex value to the character corresponding

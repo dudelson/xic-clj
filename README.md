@@ -3,7 +3,35 @@
 A rewrite of xic ([Cornell compilers project](https://www.cs.cornell.edu/courses/cs4120/2018sp/)) in clojure, as a comparison with the original
 Java implementation.
 
+### development
+
+`just` will compile java source files and start a repl (equiv. to `just dev` and `just repl`).
+
+To invoke the compiler command-line during local development, use:
+
 `$ just xic [options] <source-files>`
+
+Run `just xic --help` to see all command-line options.
+
+This command is different from `./xic [options] <source-files>`. Running `just xic` will invoke
+clojure dynamically in the local environment via `clj` after executing the compilation step to
+ensure that java source files are available to the local clojure environment. Running `./xic`
+will attempt to invoke the executable jar which is the output of the full build. This script is
+primarily intended to be used by test harness, which is described below.
+
+### testing
+
+`$ just e2e`
+
+E2E tests utilize the test harness provided by the course staff for the original project.
+This test harness is configured to look for entry points `xic-build` to build the compiler
+and `xic` to invoke it. Thus these files are thin wrappers over the tasks defined in the
+Justfile. E2E testing operates on the fully built uberjar as opposed to the local clojure
+dev environment.
+
+### deployment
+
+`just build` produces an uberjar inside of the `build/` directory which can be run via `java -jar`.
 
 # default readme content (outdated)
 

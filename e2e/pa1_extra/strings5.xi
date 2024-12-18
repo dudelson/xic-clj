@@ -1,0 +1,1 @@
+"\xGG" // invalid hex escape sequence

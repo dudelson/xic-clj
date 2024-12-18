@@ -1,0 +1,43 @@
+build
+
+
+# tests/pa1/ tests
+
+xic ("--lex pa1/") ["pa1/"] "--lex" {
+    add.xi;
+    arrayinit2.xi;
+    arrayinit.xi;
+    beauty.xi;
+    ex1.xi;
+    ex2.xi (Lexical, "empty character literal");
+    gcd.xi;
+    insertionsort.xi;
+    mdarrays.xi;
+    ratadduse.xi;
+    ratadd.xi;
+    spec1.xi;
+    spec2.xi;
+    spec3.xi;
+}
+
+# tests/pa1_extra/ tests
+
+xic ("--lex pa1_extra/") ["pa1_extra/"] "--lex" {
+    characters1.xi (Lexical, "invalid character literal");
+    characters2.xi (Lexical, "invalid hex escape sequence");
+    characters3.xi;
+    comments.xi;
+    ids1.xi;
+    integers1.xi (Lexical, "integer too large");
+    integers2.xi (Lexical, "integer too large");
+    invalidtoken1.xi (Lexical, "invalid token");
+    invalidtoken2.xi (Lexical, "invalid token");
+    keywords1.xi;
+    strings1.xi (Lexical, "invalid hex escape sequence");
+    strings2.xi (Lexical, "invalid escape sequence");
+    strings3.xi (Lexical, "expected string end");
+    strings4.xi (Lexical, "expected string end");
+    strings5.xi (Lexical, "invalid hex escape sequence");
+    symbols1.xi;
+    symbols2.xi;
+}

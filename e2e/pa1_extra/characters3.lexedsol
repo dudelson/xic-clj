@@ -1,0 +1,5 @@
+1:1 string 'a'
+1:6 character \\
+2:1 string 'a
+2:5 character b
+4:1 character \x01
